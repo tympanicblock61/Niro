@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.tympanic'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://jitpack.io' }
+    maven {
+        name = "meteor-maven"
+        url = "https://maven.meteordev.org/releases"
+    }
+    maven {
+        name = "meteor-maven-snapshots"
+        url = uri("https://maven.meteordev.org/snapshots")
+    }
+}
+
+dependencies {
+    implementation "meteordevelopment:discord-ipc:1.1"
+    implementation "com.google.code.gson:gson:2.8.9"
+    implementation("io.github.jaredmdobson:concentus:1.0.2")
+    implementation 'org.jetbrains:annotations:15.0'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'net.tympanic.niro.Niro' // <-- replace with your actual main class
+        )
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
